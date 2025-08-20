@@ -8,7 +8,8 @@ const app =Vue.createApp({
         playerHealth:100,
         monsterHealth:100,
         currentRound:0,
-        winner:null
+        winner:null,
+        logMessages:[]
     }
   },
   watch:{
@@ -52,17 +53,22 @@ const app =Vue.createApp({
         this.currentRound++;
        const attackValue =getRandomNumber(5,12);
         this.monsterHealth =this.monsterHealth - attackValue;
+        this.addLogMessage('player','attack',attackValue)
         this.attackPlayer();
     },
     attackPlayer(){
          const attackValue =getRandomNumber(8,12);
         this.playerHealth = this.playerHealth - attackValue
+        this.addLogMessage('monstor','attack',attackValue)
+
     },
     specialAttack(){
         this.currentRound++;
         const attackValue =getRandomNumber(10,25)
         this.monsterHealth =this.monsterHealth - attackValue
         this.attackPlayer();
+        this.addLogMessage('player','attack',attackValue)
+
 
     },
     healPlayer(){
@@ -72,6 +78,7 @@ const app =Vue.createApp({
         }else{
             this.playerHealth += healValue
         };
+         this.addLogMessage('player','heal',healValue)
         this.attackPlayer();
     },
     startNewGame(){
@@ -83,6 +90,13 @@ const app =Vue.createApp({
     surrender(){
         this.winner='monstor'
 
+    },
+    addLogMessage(who,what,value){
+        this.logMessages.unshift({
+            actionBy:who,
+            actionType:what,
+            actionValue:value 
+        })
     }
   }
 
